@@ -1,0 +1,27 @@
+[Unit]
+Description=Docker to RPM
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+
+EnvironmentFile=/opt/docker-rpm/<PACKAGE_NAME>/.env
+
+ExecStartPre=podman container create --rm --restart unless-stopped --publish-all --label "managed_by=docker-to-rpm" --name ${APP_NAME} ${IMAGE}
+ExecStart=podman container start ${APP_NAME}
+# ExecReload=
+ExecStop=podman container stop ${APP_NAME}
+# ExecStopPost=
+
+TimeoutStartSec=120
+TimeoutStopSec=60
+
+# Restart behavior:
+# Restart the service if it fails, with a delay, to make it restart-safe
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,52 @@
+Name:           %{APP_NAME}
+Version:        %{VERSION}
+Release:        %{RELEASE_VERSION}
+Summary:        %{APP_NAME} container packaged as rpm
+Prefix:         /opt
+Prefix:         /etc
+Group:		    Applications/System
+License:	    MIT
+Vendor:		    Bikramjeet Singh
+URL:		    http://blogs.bikramjs.in/
+Packager:	    Software Group <packager@blogs.bikramjs.in>
+BuildArch:      %{BUILD_ARCH}
+Provides:       %{APP_NAME}
+Requires(pre):  %{?EXTRA_REQUIRES}
+
+%description
+%{APP_NAME} container packaged as rpm
+
+%pre
+
+%{includefile %scripts_dir/pre-install.sh}
+
+%prep
+
+%build
+
+%install
+
+%{includefile %scripts_dir/install.sh}
+
+%post
+
+%{includefile %scripts_dir/post-install.sh}
+
+%files
+/etc/systemd/system/%{APP_NAME}.service
+%defattr(-,root,root,-)
+%dir
+/opt/docker-rpm/%{APP_NAME}
+
+
+%preun
+
+%{includefile %scripts_dir/pre-uninstall.sh}
+
+%postun
+
+%{includefile %scripts_dir/post-uninstall.sh}
+
+%changelog
+* Mon Jul 21 2025 Bikramjeet Singh <6782131+bikram990@users.noreply.github.com>
+- Sample changelog

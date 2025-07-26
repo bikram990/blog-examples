@@ -1,0 +1,13 @@
+%includefile() %{lua:
+    local function read_file(path)
+        local file = io.open(path, "rb") -- r read mode and b binary mode
+        if not file then return nil end
+        local content = file:read "*a" -- *a or *all reads the whole file
+        file:close()
+        return content
+    end
+    -- https://stackoverflow.com/a/31367946
+    -- rpm.expand("%#")
+    print("# Including file : " .. rpm.expand("%1") .. "\\n")
+    print(rpm.expand(read_file(rpm.expand("%1"))))
+}
