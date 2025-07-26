@@ -1,0 +1,32 @@
+---
+services:
+  postgres:
+    container_name: postgres
+    image: postgres@sha256:3b057e1c2c6dfee60a30950096f3fab33be141dbb0fdd7af3d477083de94166c
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "512M"
+        reservations:
+          cpus: "0.5"
+          memory: "256M"
+    ports: # ports field does not work properly in app container but works in other services
+      - "5432:5432"
+    networks:
+      - dev-net
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      # - ./pg_init_script/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  postgres-data:

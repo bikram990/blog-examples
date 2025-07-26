@@ -1,0 +1,50 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/postgres
+{
+	"name": "Python Development",
+	"dockerComposeFile": ["docker-compose.yaml", "postgres-compose.yaml"],
+	"service": "app",
+    "workspaceFolder": "/opt/${localWorkspaceFolderBasename}",
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+	},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// This can be used to network with other containers or the host.
+	// "forwardPorts": [5000, 5432],
+    
+    "initializeCommand": "~/.rd/bin/rdctl shell sudo sysctl -w vm.max_map_count=262144",
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "pip install --user -r requirements.txt",
+	"postCreateCommand": "./.devcontainer/post-create.sh",
+
+	// Configure tool-specific properties.
+	"customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.pylint",
+                "ms-python.debugpy",
+                "ms-python.vscode-pylance",
+                "ms-python.black-formatter",
+                "njpwerner.autodocstring",
+                "eamodio.gitlens",
+                "fr43nk.seito-openfile",
+                "ms-azuretools.vscode-docker",
+                "tamasfe.even-better-toml"
+            ]
+        }
+    },
+    "containerEnv": {
+        "SHELL": "/usr/bin/zsh",
+        "DEVCONTAINER_WORKSPACE_PATH": "${containerWorkspaceFolder}",
+        "PYTHONPYCACHEPREFIX": "${containerWorkspaceFolder}/.cache/Python",
+        "UV_CACHE_DIR": "${containerWorkspaceFolder}/.cache/uv"
+    }
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}
