@@ -9,7 +9,7 @@ RemainAfterExit=yes
 
 EnvironmentFile=/opt/docker-rpm/<PACKAGE_NAME>/.env
 
-ExecStartPre=podman container create --rm --restart unless-stopped --publish-all --label "managed_by=docker-to-rpm" --name ${APP_NAME} ${IMAGE}
+ExecStartPre=podman container create --rm --publish-all --label "managed_by=docker-to-rpm" --name ${APP_NAME} ${IMAGE}
 ExecStart=podman container start ${APP_NAME}
 # ExecReload=
 ExecStop=podman container stop ${APP_NAME}
